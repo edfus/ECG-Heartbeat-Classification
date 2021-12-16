@@ -5,11 +5,20 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python: Main File",
-      "type": "python",
+      "name": "Docker: Python - General",
+      "type": "docker",
       "request": "launch",
-      "program": "${workspaceFolder}/main.py",
-      "console": "integratedTerminal"
+      "preLaunchTask": "docker-run: debug",
+      "python": {
+        "pathMappings": [
+          {
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "/usr/local/src"
+          }
+        ],
+        "justMyCode": true,
+        "projectType": "general"
+      }
     }
   ]
 }

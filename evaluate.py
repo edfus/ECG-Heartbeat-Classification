@@ -39,21 +39,21 @@ for train_indices, test_indices in k_fold.split(training_set.k_x_train):
   print('------------------------------------------------------------------------')
   print(f'Training for fold {fold_no} ...')
 
-  X_train, X_test = training_set.k_x_train[train_indices], training_set.k_x_train[train_indices]
-  y_train, y_test = training_set.k_y_train[test_indices], training_set.k_y_train[test_indices]
+  X_train, X_test = training_set.k_x_train[train_indices], training_set.k_x_train[test_indices]
+  y_train, y_test = training_set.k_y_train[train_indices], training_set.k_y_train[test_indices]
 
   history = model.fit(
       X_train,
       y_train,
       epochs=EPOCHES,
       batch_size=BATCH_SIZE,
-      verbose=1
+      verbose=0
   )
 
   scores = model.evaluate(
       X_test,
       y_test,
-      verbose=1
+      verbose=0
   )
 
   print(f'Score for fold {fold_no}: {model.metrics_names[0]} of {scores[0]}; {model.metrics_names[1]} of {scores[1]*100}%')

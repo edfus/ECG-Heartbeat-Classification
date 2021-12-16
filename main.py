@@ -53,7 +53,7 @@ history = model.fit(
     training_set.k_y_train,
     epochs=EPOCHES,
     batch_size=BATCH_SIZE,
-    verbose=1
+    verbose=0
 )
 
 predictions = model.predict(testing_set.x_test)
