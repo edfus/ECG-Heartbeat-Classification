@@ -56,7 +56,9 @@ class NeutralNetwork(K.Model):
         )
         self.max_pool2 = MaxPool1D(pool_size=3, strides=2, padding="same")
 
-        self.dropout = Dropout(0.5)
+        # Controlling overfitting:
+        # #2 dropout
+        self.dropout = Dropout(.5)
         self.flatten = Flatten()
 
         self.fc1 = Dense(units=256, activation="relu")

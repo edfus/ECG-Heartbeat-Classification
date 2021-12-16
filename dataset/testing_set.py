@@ -8,5 +8,5 @@ test = import_data(os.path.join(__dirname, "data/testA.csv"))
 
 x_test = test.drop(["id"], axis=1)
 
-# 将测试集转换为适应 CNN 输入的 shape
+# Prepare the input for CNN prediction
 x_test = np.array(x_test).reshape(x_test.shape[0], x_test.shape[1], 1)

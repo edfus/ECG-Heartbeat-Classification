@@ -2,6 +2,8 @@ import numpy as np
 import os
 
 from imblearn.over_sampling import SMOTE
+from imblearn.under_sampling import RandomUnderSampler
+from imblearn.pipeline import Pipeline
 
 from .helpers import import_data
 
@@ -17,11 +19,16 @@ x_train = train.drop(["id", "label"], axis=1)
 # the examples in another.
 # (e.g. label 0 (Normal) and label 1 (Fusion of ventricular and normal))
 
-# https://www.tensorflow.org/tutorials/structured_data/imbalanced_data
+# Addressing imbalanced datasets:
+# #1 Oversample the minority classes, undersample the majority classes
 
-# 使用 SMOTE 对数据进行上采样以解决类别不平衡问题
-smote = SMOTE(random_state=2021, n_jobs=-1)
-k_x_train, k_y_train = smote.fit_resample(x_train, y_train)
+# https://arxiv.org/pdf/1106.1813.pdf
+# The combination of SMOTE and under-sampling performs better than plain under-sampling.
+over = SMOTE(sampling_strategy="auto")
+under = RandomUnderSampler(sampling_strategy="auto")
+steps = [('o', over), ('u', under)]
+pipeline = Pipeline(steps=steps)
+k_x_train, k_y_train = pipeline.fit_resample(x_train, y_train)
 
-# 将训练集转换为适应 CNN 输入的 shape
+# Reshape to CNN compatible input
 k_x_train = np.array(k_x_train).reshape(k_x_train.shape[0], k_x_train.shape[1], 1)
