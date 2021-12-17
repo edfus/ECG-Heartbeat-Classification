@@ -43,18 +43,29 @@ model.compile(
 
 # https://axon.cs.byu.edu/papers/Wilson.nn03.batch.pdf
 # The general inefficiency of batch training for gradient descent learning
-BATCH_SIZE=32
-EPOCHS=40
+BATCH_SIZE=16
+EPOCHS=30
 
-# from tensorflow.keras.callbacks import LearningRateScheduler
+from tensorflow import math
+from tensorflow.keras.callbacks import LearningRateScheduler
 
-# initial_learning_rate = 0.001
-# def lr_step_decay(epoch, lr):
-#     drop_rate = 0.5
-#     epochs_drop = 10.0
-#     return initial_learning_rate * math.pow(drop_rate, math.floor(epoch/epochs_drop))
+initial_learning_rate = 0.001 # Adam's
+def lr_step_decay(epoch, lr):
+    drop_rate = 0.5
+    epochs_drop = 10.0
+    return initial_learning_rate * math.pow(drop_rate, math.floor(epoch/epochs_drop))
 
-# lr_scheduler = LearningRateScheduler(lr_step_decay)
+decay_rate = initial_learning_rate / EPOCHS
+
+def lr_time_based_decay(epoch, lr):
+    lr *= (1. / (1. + decay_rate * epoch))
+    return lr
+
+def lr_exp_decay(epoch, lr):
+    k = 0.1
+    return initial_learning_rate * math.exp(-k*epoch)
+
+lr_scheduler = LearningRateScheduler(lr_exp_decay, verbose=1)
 
 # https://stackoverflow.com/questions/39517431/should-we-do-learning-rate-decay-for-adam-optimizer
 # In my experience it usually not necessary to 
@@ -66,7 +77,8 @@ history = model.fit(
     training_set.k_y_train,
     epochs=EPOCHS,
     batch_size=BATCH_SIZE,
-    verbose=0
+    verbose=0,
+    callbacks=[lr_scheduler]
 )
 
 print(history.history)
