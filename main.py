@@ -40,8 +40,21 @@ model.compile(
 # act as a good regularizer. Decreasing the batch size 
 # while decreasing the learning rate might lead to a 
 # better result.
-BATCH_SIZE=50
-EPOCHES=30
+
+# https://axon.cs.byu.edu/papers/Wilson.nn03.batch.pdf
+# The general inefficiency of batch training for gradient descent learning
+BATCH_SIZE=32
+EPOCHS=40
+
+# from tensorflow.keras.callbacks import LearningRateScheduler
+
+# initial_learning_rate = 0.001
+# def lr_step_decay(epoch, lr):
+#     drop_rate = 0.5
+#     epochs_drop = 10.0
+#     return initial_learning_rate * math.pow(drop_rate, math.floor(epoch/epochs_drop))
+
+# lr_scheduler = LearningRateScheduler(lr_step_decay)
 
 # https://stackoverflow.com/questions/39517431/should-we-do-learning-rate-decay-for-adam-optimizer
 # In my experience it usually not necessary to 
@@ -51,7 +64,7 @@ EPOCHES=30
 history = model.fit(
     training_set.k_x_train,
     training_set.k_y_train,
-    epochs=EPOCHES,
+    epochs=EPOCHS,
     batch_size=BATCH_SIZE,
     verbose=0
 )

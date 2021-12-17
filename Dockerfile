@@ -10,6 +10,6 @@ RUN groupadd -g 1810 py \
 USER py
 
 COPY --chown=py:py "requirements.txt" "/usr/local/src/requirements.txt"
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 CMD [ "python", "main.py" ]

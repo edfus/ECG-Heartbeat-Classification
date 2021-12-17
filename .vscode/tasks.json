@@ -24,8 +24,14 @@
       "dockerRun": {
         "runtime": "nvidia",
         "gpus": "all", 
-        "v": "${workspaceFolder}:/usr/local/src",
-        "u": "1810:1820"
+        "volumes": [
+          {
+            "localPath": "${workspaceFolder}",
+            "containerPath": "/usr/local/src"
+          },
+        ],
+        "u": "1810:1820",
+        "containerName": "cnn-ecg-classification-dev"
       }
     }
   ]

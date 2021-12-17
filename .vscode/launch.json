@@ -9,6 +9,7 @@
       "type": "docker",
       "request": "launch",
       "preLaunchTask": "docker-run: debug",
+      "containerName": "cnn-ecg-classification-dev",
       "python": {
         "pathMappings": [
           {

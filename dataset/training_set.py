@@ -20,13 +20,14 @@ x_train = train.drop(["id", "label"], axis=1)
 # (e.g. label 0 (Normal) and label 1 (Fusion of ventricular and normal))
 
 # Addressing imbalanced datasets:
-# #1 Oversample the minority classes, undersample the majority classes
+# #Oversample the minority classes, undersample the majority classes
+# https://imbalanced-learn.org/stable/over_sampling.html
 
+
+over = SMOTE(sampling_strategy="not majority", n_jobs=-1) # using all processors
 # https://arxiv.org/pdf/1106.1813.pdf
-# The combination of SMOTE and under-sampling performs better than plain under-sampling.
-over = SMOTE(sampling_strategy="auto")
-under = RandomUnderSampler(sampling_strategy="auto")
-steps = [('o', over), ('u', under)]
+# under = RandomUnderSampler(sampling_strategy="auto")
+steps = [('o', over)]
 pipeline = Pipeline(steps=steps)
 k_x_train, k_y_train = pipeline.fit_resample(x_train, y_train)
 
