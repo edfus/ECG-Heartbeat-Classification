@@ -7,9 +7,9 @@ from tensorflow.keras.layers import (
     Dropout
 )
 
-class NeutralNetwork(K.Model):
+class Model(K.Model):
     def __init__(self):
-        super(NeutralNetwork, self).__init__()
+        super(Model, self).__init__()
         self.conv1 = Conv1D(
             filters=16,
             kernel_size=3,

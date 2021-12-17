@@ -3,7 +3,7 @@ from dataset import testing_set, training_set
 
 from submit import submit
 
-model = cnn.NeutralNetwork()
+model = cnn.Model()
 
 # Adam is a replacement optimization algorithm for 
 # stochastic gradient descent for training deep 
@@ -56,6 +56,12 @@ history = model.fit(
     verbose=0
 )
 
+print(history.history)
+
 predictions = model.predict(testing_set.x_test)
 
-submit(predictions)
+print(
+  "Prediction result is saved to '{}'".format(
+    submit(predictions)
+    )
+)

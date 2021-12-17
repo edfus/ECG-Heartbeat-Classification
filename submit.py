@@ -6,6 +6,8 @@ import os
 __dirname = os.path.dirname(os.path.realpath(__file__))
 output_dest = os.path.join(__dirname, "output")
 
+timestamp_fmt = "%Y-%m-%d_%H%M%S%z"
+
 def tweak(classified_results):
   threshold = 0.5
   for row_index, row in classified_results.iterrows():
@@ -35,16 +37,20 @@ def submit(predictions):
   results["label_2"] = predictions[:, 2]
   results["label_3"] = predictions[:, 3]
 
-  tweak(results).to_csv(
-    os.path.join(
+  output_path = os.path.join(
       output_dest, 
       (
         "./submit_" 
-        + datetime.datetime.now().strftime("%Y%m%d_%H%M%S") 
+        + datetime.datetime.now().astimezone().strftime(timestamp_fmt)
         + ".csv")
-      ),
+      )
+
+  tweak(results).to_csv(
+    output_path,
     index=False,
   )
+
+  return output_path
 
 
 if __name__ == "__main__":
@@ -54,7 +60,7 @@ if __name__ == "__main__":
       output_dest, 
       (
         "./submit_" 
-        + datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S") 
+        + datetime.datetime.now().astimezone().strftime(timestamp_fmt)
         + ".csv")
       ),
     index=False,

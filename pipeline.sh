@@ -1,3 +1,3 @@
 #!/bin/sh
-python main.py 
-python evaluate.py
+python3 main.py 
+# python3 evaluate.py
