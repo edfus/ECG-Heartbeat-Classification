@@ -2,6 +2,7 @@ python-3.7.0.amd64
 output
 __pycache__
 data
-venv
+venv/*
+!venv/pyvenv.cfg
 papers
 runs

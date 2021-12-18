@@ -66,22 +66,29 @@ class Model(K.Model):
         self.fc22 = Dense(units=256, activation="sigmoid")
         self.fc3 = Dense(units=4, activation="softmax")
 
-    def call(self, x):
-        x = self.conv1(x)
-        x = self.conv2(x)
-        x = self.conv3(x)
-        x = self.conv4(x)
-        x = self.max_pool1(x)
+    def call(self, inputs, training=None):
+        inputs = self.conv1(inputs)
+        inputs = self.conv2(inputs)
+        inputs = self.conv3(inputs)
+        inputs = self.conv4(inputs)
+        inputs = self.max_pool1(inputs)
 
-        x = self.conv5(x)
-        x = self.conv6(x)
-        x = self.max_pool2(x)
+        inputs = self.conv5(inputs)
+        inputs = self.conv6(inputs)
+        inputs = self.max_pool2(inputs)
 
-        x = self.dropout(x)
-        x = self.flatten(x)
+        # Some layers, in particular the BatchNormalization
+        # layer and the Dropout layer, have different 
+        # behaviors during training and inference. For such 
+        # layers, it is standard practice to expose a training 
+        # (boolean) argument in the call() method.
+        # https://www.tensorflow.org/guide/keras/custom_layers_and_models
+        if training:
+          inputs = self.dropout(inputs)
+        inputs = self.flatten(inputs)
 
-        x1 = self.fc1(x)
-        x2 = self.fc22(self.fc21(x))
-        x = self.fc3(x1 + x2)
+        x1 = self.fc1(inputs)
+        x2 = self.fc22(self.fc21(inputs))
+        inputs = self.fc3(x1 + x2)
 
-        return x
+        return inputs

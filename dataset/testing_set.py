@@ -8,5 +8,5 @@ test = import_data(os.path.join(__dirname, "data/testA.csv"))
 
 x_test = test.drop(["id"], axis=1)
 
-# Prepare the input for CNN prediction
+# Prepare input for CNN predictions
 x_test = np.array(x_test).reshape(x_test.shape[0], x_test.shape[1], 1)

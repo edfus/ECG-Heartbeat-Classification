@@ -31,7 +31,7 @@
           },
         ],
         "u": "1810:1820",
-        "containerName": "cnn-ecg-classification-dev"
+        "containerName": "cnn-ecg"
       }
     }
   ]

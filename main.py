@@ -1,3 +1,5 @@
+from tensorflow import keras
+
 from models import cnn
 from dataset import testing_set, training_set
 
@@ -5,6 +7,7 @@ from submit import submit
 
 model = cnn.Model()
 
+initial_learning_rate = 0.001 # Adam's
 # Adam is a replacement optimization algorithm for 
 # stochastic gradient descent for training deep 
 # learning models. Adam combines the best properties 
@@ -12,8 +15,7 @@ model = cnn.Model()
 # an optimization algorithm that can handle sparse 
 # gradients on noisy problems.
 model.compile(
-    # Controlling overfitting, etc.
-    optimizer="Adam",
+    optimizer=keras.optimizers.Adam(learning_rate=initial_learning_rate),
     # The conventional way to store a matrix is to store 
     # all np of the values, even if most of those values 
     # are zeros.
@@ -40,38 +42,38 @@ model.compile(
 # act as a good regularizer. Decreasing the batch size 
 # while decreasing the learning rate might lead to a 
 # better result.
+# edit: SIKE
 
 # https://axon.cs.byu.edu/papers/Wilson.nn03.batch.pdf
 # The general inefficiency of batch training for gradient descent learning
-BATCH_SIZE=16
+BATCH_SIZE=64
 EPOCHS=30
 
 from tensorflow import math
 from tensorflow.keras.callbacks import LearningRateScheduler
 
-initial_learning_rate = 0.001 # Adam's
+# https://stackoverflow.com/questions/39517431/should-we-do-learning-rate-decay-for-adam-optimizer
 def lr_step_decay(epoch, lr):
     drop_rate = 0.5
     epochs_drop = 10.0
     return initial_learning_rate * math.pow(drop_rate, math.floor(epoch/epochs_drop))
 
-decay_rate = initial_learning_rate / EPOCHS
+decay_rate = 0.4
 
 def lr_time_based_decay(epoch, lr):
-    lr *= (1. / (1. + decay_rate * epoch))
+    lr = initial_learning_rate * (1. / (1. + decay_rate * epoch))
     return lr
 
+k = 0.1
 def lr_exp_decay(epoch, lr):
-    k = 0.1
-    return initial_learning_rate * math.exp(-k*epoch)
+    return initial_learning_rate * math.exp(-k * epoch)
 
-lr_scheduler = LearningRateScheduler(lr_exp_decay, verbose=1)
+decay_rate_exp = 0.9
+def lr_exp_decay_2(epoch, lr):
+    return initial_learning_rate * (decay_rate_exp ** epoch)
 
-# https://stackoverflow.com/questions/39517431/should-we-do-learning-rate-decay-for-adam-optimizer
-# In my experience it usually not necessary to 
-# do learning rate decay with Adam optimizer.
-# The theory is that Adam already handles learning 
-# rate optimization
+lr_scheduler = LearningRateScheduler(lr_time_based_decay, verbose=1)
+
 history = model.fit(
     training_set.k_x_train,
     training_set.k_y_train,

@@ -14,7 +14,7 @@ def import_data(file):
           heartbeats_length = len(entry) - 1
         elif heartbeats_length != len(entry) - 1:
           raise ValueError(
-            "Heartbeats provided are of inconstant length (%d, %d)".format(
+            "Heartbeats provided are of inconstant length ({}, {})".format(
               heartbeats_length, len(entry) - 1
             )
           )
