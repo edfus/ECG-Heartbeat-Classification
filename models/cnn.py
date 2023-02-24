@@ -56,8 +56,14 @@ class Model(K.Model):
         )
         self.max_pool2 = MaxPool1D(pool_size=3, strides=2, padding="same")
 
-        # Controlling overfitting:
-        # #2 dropout
+        # Dropout works by probabilistically removing, 
+        # or “dropping out,” inputs to a layer, which 
+        # may be input variables in the data sample or 
+        # activations from a previous layer. It has the 
+        # effect of simulating a large number of networks 
+        # with a very different network structure and, 
+        # in turn, making nodes in the network generally 
+        # more robust to the inputs.
         self.dropout = Dropout(.5)
         self.flatten = Flatten()
 

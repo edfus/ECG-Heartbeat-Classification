@@ -18,17 +18,6 @@ separator_bar = '-' * 62
 for train_indices, test_indices in k_fold.split(training_set.k_x_train):
   model = cnn.Model()
 
-  '''
-  from keras.callbacks import LearningRateScheduler
-  def decay_schedule(epoch, lr):
-      # decay by 0.1 every 5 epochs; use `% 1` to decay after each epoch
-      if (epoch % 5 == 0) and (epoch != 0):
-          lr = lr * 0.1
-      return lr
-
-  lr_scheduler = LearningRateScheduler(decay_schedule)
-  '''
-
   model.compile(
       optimizer="Adam",
       loss="sparse_categorical_crossentropy",
